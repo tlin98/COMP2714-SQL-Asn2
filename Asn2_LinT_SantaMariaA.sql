@@ -19,7 +19,7 @@ CREATE TABLE Hotel
 ,hotelAddress    VARCHAR2(40)    NOT NULL
 ,PRIMARY KEY (hotelNo)
 );
-
+--
 CREATE TABLE Room
 (hotelNo         NUMBER(4)       NOT NULL
 ,roomNo          NUMBER(4)       NOT NULL
@@ -27,14 +27,14 @@ CREATE TABLE Room
 ,price           NUMBER(6,2)     NOT NULL
 ,PRIMARY KEY (hotelNo, roomNo)
 );
-
+--
 CREATE TABLE Guest
 (guestNo         NUMBER(4)       NOT NULL
 ,guestName       VARCHAR2(15)    NOT NULL
 ,guestAddress    VARCHAR2(40)    NOT NULL
 ,PRIMARY KEY (guestNo)
 );
-
+--
 CREATE TABLE Booking
 (hotelNo          NUMBER(4)      NOT NULL
 ,guestNo          NUMBER(4)      NOT NULL
@@ -397,5 +397,9 @@ INSERT INTO Booking
   VALUES (8, 5, DATE'2017-01-19', DATE'2017-02-28', 1);
 --
 COMMIT;
+--
+-- Q1 6.10
+--
+SELECT DISTINCT hotelName, hotelAddress, type, price FROM Hotel, Room WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Double', 'Family') ORDER BY hotelName DESC, price ASC, type DESC;
 --
 SPOOL OFF;
