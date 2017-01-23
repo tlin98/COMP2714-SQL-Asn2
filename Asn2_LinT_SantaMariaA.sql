@@ -1,4 +1,4 @@
-SPOOL "Asn02.txt"
+SPOOL "Asn02.txt"                                       
 SET ECHO ON;
 --
 -- Names: Lin Tony, Santamaria Amanda
