@@ -1,8 +1,11 @@
 SPOOL "Asn02.txt"
 SET ECHO ON;
 --
--- Asn2SetupHotels.sql
--- Sample data for Comp2714 SQL Assignments
+-- Names: Lin Tony, Santamaria Amanda
+-- Date: 2017-01-25
+-- Assignment: 2
+-- Set E
+-- Student #: A00984756, 
 --
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
 DROP TABLE Booking;
