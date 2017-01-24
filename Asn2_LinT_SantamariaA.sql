@@ -411,6 +411,8 @@ ORDER BY hotelName DESC, price ASC, type DESC;
 --
 -- Fill your code on this line Mandy! :D
 --
+--
+--
 -- Q3 6.13
 --
 SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
@@ -418,5 +420,14 @@ SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
 -- Q4 6.14
 --
 -- Fill your code on this line Mandy! :D
+--
+--
+--
+-- Q5 6.16
+-- Tony - WORKS, but I'm sort of clueless here
+--
+SELECT r.type, r.price, COUNT(*) AS "Count" FROM Room r INNER JOIN Hotel h ON r.hotelNo = h.hotelNo WHERE h.hotelName LIKE '%Grosvenor%' HAVING COUNT(*) > 3 GROUP BY r.type, r.price ORDER BY r.price;
+--
+-- Q6 6.17
 --
 SPOOL OFF;
