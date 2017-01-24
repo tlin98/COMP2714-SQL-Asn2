@@ -405,17 +405,19 @@ COMMIT;
 --
 SELECT DISTINCT hotelName, hotelAddress, type, price 
 FROM Hotel, Room 
-WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Double', 'Family') 
+WHERE hotelAddress LIKE '%London' 
+  AND price < 100.00 
+  AND type in ('Single', 'Double', 'Family') 
 ORDER BY hotelName DESC, price ASC, type DESC;
 --
 -- Q2 6.11
 --
-SELECT hotelName, hotelAddress, roomNo, dateFrom, dateTo
+SELECT hotelName, hotelAddress, roomNo, dateFrom
 FROM Hotel, Booking
 WHERE hotelAddress LIKE '%Vancouver%'
-    AND hotelAddress NOT LIKE '%West Vancouver%'
-    AND hotelAddress NOT LIKE '%North Vancouver%'
-    AND dateTo IS NULL;
+  AND hotelAddress NOT LIKE '%West Vancouver%'
+  AND hotelAddress NOT LIKE '%North Vancouver%'
+  AND dateTo IS NULL;
 --
 --
 --
@@ -456,7 +458,8 @@ SELECT h.hotelName, SUM(r.price) AS "Revenue"
 FROM Booking b 
 INNER JOIN Room r ON r.hotelNo = b.hotelNo and r.roomNo = b.roomNo 
 INNER JOIN Hotel h ON b.hotelNo = h.hotelNo 
-WHERE h.hotelName LIKE '%Grosvenor%' AND b.dateFrom <= '2017-01-29' AND (b.dateTo >= '2017-01-29' OR b.dateTo IS NULL)
+WHERE h.hotelName LIKE '%Grosvenor%' AND b.dateFrom <= '2017-01-29'
+  AND (b.dateTo >= '2017-01-29' OR b.dateTo IS NULL)
 GROUP BY h.hotelName;
 --
 -- Q8 6.19
