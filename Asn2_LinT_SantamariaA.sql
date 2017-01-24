@@ -436,4 +436,5 @@ SELECT r.type, r.price, COUNT(*) AS "Count" FROM Room r INNER JOIN Hotel h ON r.
 --
 -- Q6 6.17
 --
+SELECT g.guestName, b.roomNo FROM Guest g INNER JOIN Booking b ON g.guestNo = b.guestNo INNER JOIN Hotel h ON b.hotelNo = h.hotelNo WHERE h.hotelName LIKE 'Grosvenor Hotel' GROUP BY g.guestName, b.roomNo;
 SPOOL OFF;
