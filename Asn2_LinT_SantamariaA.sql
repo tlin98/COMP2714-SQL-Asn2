@@ -403,7 +403,8 @@ COMMIT;
 --
 -- Q1 6.10
 --
-SELECT DISTINCT hotelName, hotelAddress, type, price FROM Hotel, Room 
+SELECT DISTINCT hotelName, hotelAddress, type, price 
+FROM Hotel, Room 
 WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Double', 'Family') 
 ORDER BY hotelName DESC, price ASC, type DESC;
 --
@@ -420,7 +421,10 @@ WHERE hotelAddress LIKE '%Vancouver%'
 --
 -- Q3 6.13
 --
-SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
+-- All the averages are the same!
+SELECT hotelName, AVG(price) AS "Avg.Price" 
+FROM Hotel, Room 
+GROUP BY hotelName;
 --
 -- Q4 6.14
 -- Do this for each hotel and in one single query. List the total revenue with the hotelName, and only if the total revenue is between $500 to $1000 [in SQL context]. List in hotelName order.
@@ -432,9 +436,43 @@ SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
 -- Q5 6.16
 -- Tony - WORKS, but I'm sort of clueless here
 --
-SELECT r.type, r.price, COUNT(*) AS "Count" FROM Room r INNER JOIN Hotel h ON r.hotelNo = h.hotelNo WHERE h.hotelName LIKE '%Grosvenor%' HAVING COUNT(*) > 3 GROUP BY r.type, r.price ORDER BY r.price;
+SELECT r.type, r.price, COUNT(*) AS "Count" 
+FROM Room r 
+INNER JOIN Hotel h ON r.hotelNo = h.hotelNo 
+WHERE h.hotelName LIKE '%Grosvenor%' 
+HAVING COUNT(*) > 3 
+GROUP BY r.type, r.price 
+ORDER BY r.price;
 --
 -- Q6 6.17
+-- 
+-- 0 Bookings with guest at hotel during date 2016-09-29. Replaced with 2017-01-29
+-- Fill your code here Mandy! :D
 --
-SELECT g.guestName, b.roomNo FROM Guest g INNER JOIN Booking b ON g.guestNo = b.guestNo INNER JOIN Hotel h ON b.hotelNo = h.hotelNo WHERE h.hotelName LIKE 'Grosvenor Hotel' GROUP BY g.guestName, b.roomNo;
+-- Q7 6.19
+--
+-- 0 Bookings for 2016-09-29, replaced with 2017-01-29
+SELECT h.hotelName, SUM(r.price) AS "Revenue" 
+FROM Booking b 
+INNER JOIN Room r ON r.hotelNo = b.hotelNo and r.roomNo = b.roomNo 
+INNER JOIN Hotel h ON b.hotelNo = h.hotelNo 
+WHERE h.hotelName LIKE '%Grosvenor%' AND b.dateFrom <= '2017-01-29' AND (b.dateTo >= '2017-01-29' OR b.dateTo IS NULL)
+GROUP BY h.hotelName;
+--
+-- Q8 6.19
+--
+-- Fill your code here Mandy! :D
+--
+-- Q9 
+-- Complicated. I'm Left-Right disoriented
+SELECT h.hotelName
+FROM Hotel h 
+LEFT OUTER JOIN Room r ON r.hotelNo = h.hotelNo
+HAVING COUNT(*) = 1
+GROUP BY h.hotelName;
+-- 
+-- Q10
+-- 
+-- Fill your code here Mandy! :D
+--
 SPOOL OFF;
