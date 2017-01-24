@@ -408,7 +408,6 @@ WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Dou
 ORDER BY hotelName DESC, price ASC, type DESC;
 --
 -- Q2 6.11
--- List the Vancouver hotel bookings for which no dateTo has been specified. List the hotelName, hotelAddress, room number, dateFrom and dateTo. Note: Hotels in West and North Vancouver should be excluded.
 --
 SELECT hotelName, hotelAddress, roomNo, dateFrom, dateTo
 FROM Hotel, Booking
