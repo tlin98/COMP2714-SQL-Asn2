@@ -5,7 +5,7 @@ SET ECHO ON;
 -- Date: 2017-01-25
 -- Assignment: 2
 -- Set E
--- Student #: A00984756, 
+-- Student #: A00984756, A00984110
 --
 ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
 DROP TABLE Booking;
@@ -408,8 +408,14 @@ WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Dou
 ORDER BY hotelName DESC, price ASC, type DESC;
 --
 -- Q2 6.11
+-- List the Vancouver hotel bookings for which no dateTo has been specified. List the hotelName, hotelAddress, room number, dateFrom and dateTo. Note: Hotels in West and North Vancouver should be excluded.
 --
--- Fill your code on this line Mandy! :D
+SELECT hotelName, hotelAddress, roomNo, dateFrom, dateTo
+FROM Hotel, Booking
+WHERE hotelAddress LIKE '%Vancouver%'
+    AND hotelAddress NOT LIKE '%West Vancouver%'
+    AND hotelAddress NOT LIKE '%North Vancouver%'
+    AND dateTo IS NULL;
 --
 --
 --
@@ -418,6 +424,7 @@ ORDER BY hotelName DESC, price ASC, type DESC;
 SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
 --
 -- Q4 6.14
+-- Do this for each hotel and in one single query. List the total revenue with the hotelName, and only if the total revenue is between $500 to $1000 [in SQL context]. List in hotelName order.
 --
 -- Fill your code on this line Mandy! :D
 --
