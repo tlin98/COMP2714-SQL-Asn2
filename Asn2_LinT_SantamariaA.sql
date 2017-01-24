@@ -419,9 +419,4 @@ SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
 --
 -- Fill your code on this line Mandy! :D
 --
---
--- Q2
---
---
---
 SPOOL OFF;
