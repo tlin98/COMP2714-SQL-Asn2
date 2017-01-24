@@ -403,6 +403,21 @@ COMMIT;
 --
 -- Q1 6.10
 --
-SELECT DISTINCT hotelName, hotelAddress, type, price FROM Hotel, Room WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Double', 'Family') ORDER BY hotelName DESC, price ASC, type DESC;
+SELECT DISTINCT hotelName, hotelAddress, type, price FROM Hotel, Room 
+WHERE hotelAddress LIKE '%London' AND price < 100.00 AND type in ('Single', 'Double', 'Family') 
+ORDER BY hotelName DESC, price ASC, type DESC;
+--
+-- Q2 6.11
+--
+-- Fill your code on this line Mandy! :D
+--
+-- Q3 6.13
+--
+SELECT hotelName, AVG(price) AS "Avg.Price" FROM Hotel, Room GROUP BY hotelName;
+--
+-- Q4 6.14
+--
+-- Fill your code on this line Mandy! :D
+--
 --
 SPOOL OFF;
