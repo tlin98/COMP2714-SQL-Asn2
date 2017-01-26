@@ -420,14 +420,14 @@ WHERE hotelAddress LIKE '%Vancouver%'
   AND dateTo IS NULL;
 --
 -- Q3 6.13
---
 -- All the averages are the same!
+--
 SELECT hotelName, AVG(price) AS "Avg.Price" 
 FROM Hotel, Room 
 GROUP BY hotelName;
 --
 -- Q4 6.14
--- Do this for each hotel and in one single query. List the total revenue with the hotelName, and only if the total revenue is between $500 to $1000 [in SQL context]. List in hotelName order.
+-- 
 --
 SELECT h.hotelName, SUM(r.price) AS "Total Revenue"
 FROM Booking b
@@ -448,7 +448,8 @@ GROUP BY r.type, r.price
 ORDER BY r.price;
 --
 -- Q6 6.17
--- This one took forever to debug, but apparently I was just missing an alias letter in one spot. Need more practice I suppose :)
+-- 0 Bookings for 2016-09-29, replaced with 2017-01-29
+--
 SELECT g.guestName, b.roomNo
 FROM Guest g
 INNER JOIN Booking b ON g.guestNo = b.guestNo
@@ -459,8 +460,8 @@ WHERE h.hotelName LIKE 'Grosvenor Hotel'
 GROUP BY g.guestName, b.roomNo;
 --
 -- Q7 6.19
---
 -- 0 Bookings for 2016-09-29, replaced with 2017-01-29
+--
 SELECT h.hotelName, SUM(r.price) AS "Revenue" 
 FROM Booking b 
 INNER JOIN Room r ON r.hotelNo = b.hotelNo and r.roomNo = b.roomNo 
@@ -471,10 +472,18 @@ GROUP BY h.hotelName;
 --
 -- Q8 6.19
 --
--- Fill your code here Mandy! :D
+SELECT h.hotelName, r.type, SUM(r.price) AS "Income"
+FROM Booking b
+INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
+INNER JOIN Room r ON r.hotelNo = b.hotelNo AND r.roomNo = b.roomNo
+WHERE b.dateFrom <= '2017-01-29' 
+  AND (b.dateTo >= '2017-01-29' OR b.dateTo IS NULL)
+GROUP BY h.hotelName, r.type
+ORDER BY h.hotelName ASC, r.type ASC;
 --
 -- Q9 
 -- Complicated. I'm Left-Right disoriented
+--
 SELECT h.hotelName
 FROM Hotel h 
 LEFT OUTER JOIN Room r ON r.hotelNo = h.hotelNo
@@ -482,7 +491,9 @@ HAVING COUNT(*) = 1
 GROUP BY h.hotelName;
 -- 
 -- Q10
--- 
--- Fill your code here Mandy! :D
+-- Amanda: Not entirely sure how this works, but it does?
+--
+SELECT COUNT(DISTINCT h.hotelName) AS "Total # of hotels" , COUNT(DISTINCT r.hotelNo) AS "# of hotels constructed" , (COUNT(DISTINCT h.hotelName) - COUNT(DISTINCT r.hotelNo)) AS "# of hotels building", (COUNT(DISTINCT h.hotelNo) - COUNT(DISTINCT r.hotelNo)) * 100 / COUNT(DISTINCT h.hotelNo) AS "% of hotels under construction"
+FROM Hotel h, Room r;
 --
 SPOOL OFF;
