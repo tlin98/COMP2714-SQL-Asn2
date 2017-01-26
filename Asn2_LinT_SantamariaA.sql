@@ -419,8 +419,6 @@ WHERE hotelAddress LIKE '%Vancouver%'
   AND hotelAddress NOT LIKE '%North Vancouver%'
   AND dateTo IS NULL;
 --
---
---
 -- Q3 6.13
 --
 -- All the averages are the same!
@@ -431,9 +429,12 @@ GROUP BY hotelName;
 -- Q4 6.14
 -- Do this for each hotel and in one single query. List the total revenue with the hotelName, and only if the total revenue is between $500 to $1000 [in SQL context]. List in hotelName order.
 --
--- Fill your code on this line Mandy! :D
---
---
+SELECT h.hotelName, SUM(r.price) AS "Total Revenue"
+FROM Booking b
+  INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
+  INNER JOIN Room r ON r.hotelNo = b.hotelNo AND r.roomNo = b.roomNo
+HAVING ((1000 >= SUM(r.price)) AND (SUM(r.price) >= 500))
+GROUP BY h.hotelName;
 --
 -- Q5 6.16
 -- Tony - WORKS, but I'm sort of clueless here
@@ -447,9 +448,15 @@ GROUP BY r.type, r.price
 ORDER BY r.price;
 --
 -- Q6 6.17
--- 
--- 0 Bookings with guest at hotel during date 2016-09-29. Replaced with 2017-01-29
--- Fill your code here Mandy! :D
+-- This one took forever to debug, but apparently I was just missing an alias letter in one spot. Need more practice I suppose :)
+SELECT g.guestName, b.roomNo
+FROM Guest g
+INNER JOIN Booking b ON g.guestNo = b.guestNo
+INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
+WHERE h.hotelName LIKE 'Grosvenor Hotel'
+  AND b.dateFrom <= '2017-01-29'
+  AND b.dateTo >= '2017-01-29' 
+GROUP BY g.guestName, b.roomNo;
 --
 -- Q7 6.19
 --
