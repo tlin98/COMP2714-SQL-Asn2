@@ -1,4 +1,4 @@
-SPOOL "Asn02.txt"                                       
+SPOOL "Asn2_LinT_SantamariaA.txt"                                       
 SET ECHO ON;
 --
 -- Names: Lin Tony, Santamaria Amanda
@@ -403,8 +403,9 @@ COMMIT;
 --
 -- Q1 6.10
 --
-SELECT DISTINCT hotelName, hotelAddress, type, price 
-FROM Hotel, Room 
+SELECT hotelName, hotelAddress, type, price 
+FROM Hotel
+  INNER JOIN Room ON Room.hotelNo = Hotel.hotelNo
 WHERE hotelAddress LIKE '%London' 
   AND price < 100.00 
   AND type in ('Single', 'Double', 'Family') 
@@ -413,60 +414,61 @@ ORDER BY hotelName DESC, price ASC, type DESC;
 -- Q2 6.11
 --
 SELECT hotelName, hotelAddress, roomNo, dateFrom
-FROM Hotel, Booking
+FROM Hotel
+  INNER JOIN Booking ON Hotel.hotelNo = Booking.hotelNo
 WHERE hotelAddress LIKE '%Vancouver%'
   AND hotelAddress NOT LIKE '%West Vancouver%'
   AND hotelAddress NOT LIKE '%North Vancouver%'
   AND dateTo IS NULL;
 --
 -- Q3 6.13
--- All the averages are the same!
 --
 SELECT hotelName, AVG(price) AS "Avg.Price" 
-FROM Hotel, Room 
+FROM Hotel
+  INNER JOIN Room ON Hotel.hotelNo = Room.hotelNo
 GROUP BY hotelName;
 --
 -- Q4 6.14
--- 
 --
 SELECT h.hotelName, SUM(r.price) AS "Total Revenue"
 FROM Booking b
   INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
-  INNER JOIN Room r ON r.hotelNo = b.hotelNo AND r.roomNo = b.roomNo
-HAVING ((1000 >= SUM(r.price)) AND (SUM(r.price) >= 500))
+  INNER JOIN Room r ON r.hotelNo = b.hotelNo 
+  AND r.roomNo = b.roomNo
+HAVING ((1000 >= SUM(r.price)) 
+  AND (SUM(r.price) >= 500))
 GROUP BY h.hotelName;
 --
 -- Q5 6.16
--- Tony - WORKS, but I'm sort of clueless here
 --
 SELECT r.type, r.price, COUNT(*) AS "Count" 
 FROM Room r 
-INNER JOIN Hotel h ON r.hotelNo = h.hotelNo 
+  INNER JOIN Hotel h ON r.hotelNo = h.hotelNo 
 WHERE h.hotelName LIKE '%Grosvenor%' 
 HAVING COUNT(*) > 3 
 GROUP BY r.type, r.price 
 ORDER BY r.price;
 --
 -- Q6 6.17
--- 0 Bookings for 2016-09-29, replaced with 2017-01-29
 --
 SELECT g.guestName, b.roomNo
 FROM Guest g
-INNER JOIN Booking b ON g.guestNo = b.guestNo
-INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
+  INNER JOIN Booking b ON g.guestNo = b.guestNo
+  INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
 WHERE h.hotelName LIKE 'Grosvenor Hotel'
   AND b.dateFrom <= '2017-01-29'
   AND b.dateTo >= '2017-01-29' 
 GROUP BY g.guestName, b.roomNo;
 --
 -- Q7 6.19
--- 0 Bookings for 2016-09-29, replaced with 2017-01-29
 --
 SELECT h.hotelName, SUM(r.price) AS "Revenue" 
 FROM Booking b 
-INNER JOIN Room r ON r.hotelNo = b.hotelNo and r.roomNo = b.roomNo 
-INNER JOIN Hotel h ON b.hotelNo = h.hotelNo 
-WHERE h.hotelName LIKE '%Grosvenor%' AND b.dateFrom <= '2017-01-29'
+  INNER JOIN Room r ON r.hotelNo = b.hotelNo 
+  AND r.roomNo = b.roomNo 
+  INNER JOIN Hotel h ON b.hotelNo = h.hotelNo 
+WHERE h.hotelName LIKE '%Grosvenor%' 
+  AND b.dateFrom <= '2017-01-29'
   AND (b.dateTo >= '2017-01-29' OR b.dateTo IS NULL)
 GROUP BY h.hotelName;
 --
@@ -474,26 +476,30 @@ GROUP BY h.hotelName;
 --
 SELECT h.hotelName, r.type, SUM(r.price) AS "Income"
 FROM Booking b
-INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
-INNER JOIN Room r ON r.hotelNo = b.hotelNo AND r.roomNo = b.roomNo
+  INNER JOIN Hotel h ON b.hotelNo = h.hotelNo
+  INNER JOIN Room r ON r.hotelNo = b.hotelNo 
+  AND r.roomNo = b.roomNo
 WHERE b.dateFrom <= '2017-01-29' 
   AND (b.dateTo >= '2017-01-29' OR b.dateTo IS NULL)
 GROUP BY h.hotelName, r.type
 ORDER BY h.hotelName ASC, r.type ASC;
 --
 -- Q9 
--- Complicated. I'm Left-Right disoriented
 --
-SELECT h.hotelName
+SELECT h.hotelName, h.hotelNo, h.hotelAddress
 FROM Hotel h 
-LEFT OUTER JOIN Room r ON r.hotelNo = h.hotelNo
+  LEFT OUTER JOIN Room r ON r.hotelNo = h.hotelNo
 HAVING COUNT(*) = 1
-GROUP BY h.hotelName;
+GROUP BY h.hotelName, h.hotelNo, h.hotelAddress
+ORDER BY h.hotelNo ASC;
 -- 
 -- Q10
--- Amanda: Not entirely sure how this works, but it does?
 --
-SELECT COUNT(DISTINCT h.hotelName) AS "Total # of hotels" , COUNT(DISTINCT r.hotelNo) AS "# of hotels constructed" , (COUNT(DISTINCT h.hotelName) - COUNT(DISTINCT r.hotelNo)) AS "# of hotels building", (COUNT(DISTINCT h.hotelNo) - COUNT(DISTINCT r.hotelNo)) * 100 / COUNT(DISTINCT h.hotelNo) AS "% of hotels under construction"
-FROM Hotel h, Room r;
+SELECT COUNT(DISTINCT h.hotelName) AS "Total # of hotels"
+,COUNT(DISTINCT r.hotelNo) AS "# constructed"
+,(COUNT(DISTINCT h.hotelName) - COUNT(DISTINCT r.hotelNo)) AS "# under construction"
+,(COUNT(DISTINCT h.hotelNo) - COUNT(DISTINCT r.hotelNo)) * 100 / COUNT(DISTINCT h.hotelNo) AS "% under construction"
+FROM Hotel h
+  LEFT OUTER JOIN Room r ON h.hotelNo = r.hotelNo;
 --
 SPOOL OFF;
